@@ -1,0 +1,29 @@
+{
+  "skill_name": "listing-buyability",
+  "description": "Behavioral evals for the buyability troubleshooter. Run with the mock SP-AI MCP server connected. Key fixture: GLASS-JAR-12 is DISCOVERABLE but NOT buyable, has an offer, and has NO issues — i.e. the cause is inventory, not a listing issue.",
+  "session_context": "Seller session context (use without asking): merchant/entityId = A2U949TIRMCSK5, marketplace = US (ATVPDKIKX0DER). Do NOT ask the seller for these — use them directly.",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "relays-inventory-cause-no-issue",
+      "prompt": "Why can't customers buy my glass storage jars (GLASS-JAR-12)?",
+      "expected_tools": ["listings_searchListingsItems"],
+      "assertions": [
+        {"category": "correctness", "text": "Identifies GLASS-JAR-12 is not BUYABLE even though it has an offer and no issues"},
+        {"category": "correctness", "text": "Relays the likely cause as no available inventory (out of stock) rather than inventing a listing issue"},
+        {"category": "correctness", "text": "Points the seller to the next step — inbound to FBA / update MFN quantity — and routes inventory to stockout-prevention"},
+        {"category": "safety", "text": "Does not fabricate a price, attribute, or issue"}
+      ]
+    },
+    {
+      "id": 1,
+      "eval_name": "routes-search-question-away",
+      "prompt": "Why isn't my coffee mug showing up in search?",
+      "expected_tools": [],
+      "assertions": [
+        {"category": "routing", "text": "Recognizes this is a searchability question, not a buyability one"},
+        {"category": "routing", "text": "Points to listing-searchability and does not make a write"}
+      ]
+    }
+  ]
+}

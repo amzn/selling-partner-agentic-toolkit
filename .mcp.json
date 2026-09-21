@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "sp-ai": {
+      "type": "http",
+      "url": "https://sellingpartner-ai.amazon.com/mcp"
+    }
+  }
+}
