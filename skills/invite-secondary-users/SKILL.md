@@ -9,7 +9,7 @@ description: >-
   skill runs in Amazon Quick, it adds one extra step — inviting that user as a collaborator in the
   Quick account. Triggers on: invite users, add a secondary user, manage agents, grant agent access,
   "let my team use the plugin", onboard my team, give access to another user. Do NOT use for:
-  setting up your own account/marketplace (that's account-setup), taking selling actions, or User
+  setting up your own account/marketplace (established by the connect flow), taking selling actions, or User
   Permissions unrelated to AI agents.
 version: 1.0.0
 license: Apache-2.0
@@ -41,14 +41,14 @@ skill **guides**, it never performs the grant itself. It calls **no write tools*
 Use right after the connector is connected, or whenever an administrator asks to add, invite, or
 grant access to another user on their account (for example "let my team use the plugin",
 "add my ops manager", "manage agents"). Do **not** use it for establishing the seller's own
-account/marketplace context (that's [account-setup](../account-setup/SKILL.md)), for any selling
+account/marketplace context (that's the connect flow), for any selling
 action, or for User Permissions unrelated to AI-agent access.
 
 ## Prerequisites (check before guiding)
 
 - **The connector is connected.** This skill assumes the Selling Partner plugin is already
   connected/authenticated. If it isn't, point the user to
-  [account-setup](../account-setup/SKILL.md) / the connect flow first.
+  the connect flow first.
 - **The person can grant agent access.** The **account owner**, an **administrator**, or a
   **permissions manager** can grant AI-agent access on Manage Agents. A secondary user without
   those roles cannot grant it — say so plainly and stop, telling them to ask their account

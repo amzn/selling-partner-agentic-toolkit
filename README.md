@@ -11,7 +11,6 @@ tools allowed by your Seller Central roles. Write actions are drafted for your a
 
 ## Skills
 
-- **account-setup** — establish and verify the active seller account (Merchant Token / marketplace) so other skills run without re-asking.
 - **seller-analytics** — seller performance metrics (inventory, traffic, sales); discovers metric IDs before querying.
 - **stockout-prevention** — quantify stockout risk from days-of-supply and velocity, recommend how much to reorder and by when, and check the inbound-shipment gap. Gives no pricing advice in either direction; if you name a specific price it will draft that exact change for your approval.
 - **fba-inbound-management** — full FBA inbound plan workflow (create -> packing -> placement -> transportation -> confirm) with approval gates.

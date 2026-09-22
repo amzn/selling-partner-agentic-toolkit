@@ -54,8 +54,8 @@
       "prompt": "How do I set up my own account and marketplace to start using the plugin?",
       "expected_tools": [],
       "assertions": [
-        {"category": "routing", "text": "Does NOT run the invite/Manage-Agents workflow (this is account-setup, out of scope)"},
-        {"category": "routing", "text": "Points to account-setup / the connect flow instead"}
+        {"category": "routing", "text": "Does NOT run the invite/Manage-Agents workflow (this is account setup, out of scope)"},
+        {"category": "routing", "text": "Points to the connect flow instead"}
       ]
     },
     {
