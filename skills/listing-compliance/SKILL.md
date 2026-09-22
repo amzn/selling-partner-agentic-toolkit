@@ -60,7 +60,7 @@ program-policy questions unrelated to a listing.
 
 > Needs `entityId`, `sellerId` (the merchant token — a **different** identifier from the
 > `entityId` MCID) and one `marketplaceIds` from the session's account context (see
-> [account-setup](../account-setup/SKILL.md)); ask once, reuse. The Seller Assistant tools are
+> the connect flow); ask once, reuse. The Seller Assistant tools are
 > currently classified **destructive** in the connector (including the poll) and are invoked via
 > `call_destructive_tool` — see
 > [references/seller-assistant-protocol.md](references/seller-assistant-protocol.md).
@@ -73,7 +73,7 @@ program-policy questions unrelated to a listing.
 
 ### Step 1 — Establish account context (reuse, don't re-ask)
 Pin exactly one `entityId`, one `sellerId`, and one `marketplaceId` from the session (see
-[account-setup](../account-setup/SKILL.md)). `sellerId` is the **merchant token**, a distinct
+the connect flow). `sellerId` is the **merchant token**, a distinct
 identifier from the `entityId` MCID — Step 4 needs it, so pin it here rather than deriving it
 later. If several are in scope, ask which; never invent one, and never reuse the `entityId` as a
 `sellerId`.

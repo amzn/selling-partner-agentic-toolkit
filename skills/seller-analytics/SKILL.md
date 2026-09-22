@@ -9,7 +9,7 @@ description: >-
   risk of a stockout", "how much inventory do I have", "what's my days of supply", "show me
   page views by ASIN", "when should I restock", "seller analytics", "business report". Do NOT
   use for: changing prices or listings, creating shipments, tax/GST/financial-settlement
-  reports, or establishing which account/marketplace to use (that's account-setup).
+  reports, or establishing which account/marketplace to use (established by the connect flow).
 version: 1.0.0
 license: Apache-2.0
 metadata:
@@ -38,7 +38,7 @@ of supply, which is `FBA_INV_VIS_ONHAND_PMEAN_DOS`).
 Use when the seller asks about **how their business is doing** — inventory levels, stockout
 risk, restock timing, sessions/page views/glance views, featured-offer share, ordered units,
 or revenue. Do **not** use it to take any action on the account, for tax/financial-settlement
-reporting, or to establish account context (that's [account-setup](../account-setup/SKILL.md)).
+reporting, or to establish account context (that's the connect flow).
 
 ## Tools this skill orchestrates
 
@@ -49,7 +49,7 @@ reporting, or to establish account context (that's [account-setup](../account-se
 
 > **Required on every call:** `entityId` (the seller's Merchant Token / MCID) **and**
 > `marketplaceIds`. The gateway does **not** auto-populate `entityId` — pass it explicitly
-> from the session's account context (see [account-setup](../account-setup/SKILL.md)). Every
+> from the session's account context (see the connect flow). Every
 > `analytics_getMetricData` call must **also** carry a `MARKETPLACE_ID` filter inside
 > `groupableColumnFilter` — see [request-reference.md](references/request-reference.md).
 
@@ -57,7 +57,7 @@ reporting, or to establish account context (that's [account-setup](../account-se
 
 ### Step 1 — Establish account context (reuse, don't re-ask)
 You need the seller's `entityId` (Merchant Token / MCID) and one `marketplaceId`. Reuse what
-the session already carries; only fall back to account-setup if it's missing. Never invent an
+the session already carries; only ask for it if the session did not supply it. Never invent an
 `entityId` or marketplace.
 
 ### Step 2 — Discover the right metric (never guess)
