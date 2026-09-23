@@ -35,7 +35,7 @@ use for listing content, advertising, or order management.
 
 ## Tools this skill orchestrates
 
-All are SP-API MCP tools served via the Amazon Selling Partner Connector (the `sp-ai` MCP server):
+All are SP-API MCP tools served via the Amazon Selling Partner Connector (the `amazon-selling-partner` MCP server):
 
 | Step | Tool | Purpose |
 |------|------|---------|
