@@ -45,7 +45,7 @@ advertising, or order management.
 
 ## Tools this skill orchestrates
 
-All are SP-API Fulfillment Inbound v2024-03-20 tools on the `sp-ai` MCP server. Each
+All are SP-API Fulfillment Inbound v2024-03-20 tools on the `amazon-selling-partner` MCP server. Each
 pipeline stage follows a **generate → list → confirm** pattern:
 
 | Stage | Generate / Write | List / Read | Confirm |
