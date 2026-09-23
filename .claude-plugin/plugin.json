@@ -1,5 +1,5 @@
 {
-  "name": "amazon-sp-ai",
+  "name": "amazon-selling-partner",
   "displayName": "Amazon Selling Partner",
   "version": "1.0.0",
   "description": "Connect your Amazon Seller Central account to Claude. Ask about sales, inventory, and listing performance and get recommendations grounded in your own data, not generic advice. Review and approve every action, without switching back to Seller Central. Currently in beta.",

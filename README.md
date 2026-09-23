@@ -1,5 +1,4 @@
-# Amazon Selling Partner — v1.0.0
-
+# Amazon Selling Partner
 Skills for managing an Amazon seller account via SP-API, through the Amazon Selling Partner Connector (MCP). Write actions are always human-in-the-loop (drafted for your approval).
 
 ## Connector
