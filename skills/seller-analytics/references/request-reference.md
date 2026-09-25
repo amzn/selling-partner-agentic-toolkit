@@ -36,14 +36,17 @@ Retrieves values. Build the request carefully — the API is strict.
   **Not** an array of strings.
 - `startDate` — inclusive, `YYYY-MM-DD`.
 - `endDate` — inclusive, `YYYY-MM-DD`.
-- `groupableColumnFilter` — **must always include a `MARKETPLACE_ID` filter**, even though
-  `marketplaceIds` is also passed:
+- `groupableColumnFilter` (**required**) — **must contain a `MARKETPLACE_ID` leaf condition**
+  using **`EQUALS`** (single marketplace) or **`IN`** (multiple), with an **actual value**.
+  Predicate operators (`IS_NULL`, `IS_NOT_NULL`, `LIKE`) and other columns (e.g. an `ASIN`-only
+  filter) do **not** satisfy this; a request without a valued `MARKETPLACE_ID` condition is
+  rejected with "missing marketplace ID filter". Required even though `marketplaceIds` is also
+  passed. To also filter by another dimension, wrap both in an `AND` (see the ASIN example below).
   ```json
   { "operator": "EQUALS", "column": "MARKETPLACE_ID", "value": {"stringValue": "ATVPDKIKX0DER"} }
   ```
-- `dateGranularity` — `DAY | WEEK | MONTH | QUARTER | YEAR` (splits results into time buckets).
-  **Effectively required:** omitting it returns empty results. The Swagger model lists it as
-  optional today, but always send it. (Being made required in the model.)
+- `dateGranularity` (**required**) — `DAY | WEEK | MONTH | QUARTER | YEAR` (splits results into
+  time buckets). Omitting it fails / returns empty. Send it on every call.
 
 **Optional parameters**
 - `groupBy` — array of groupable column names, e.g. `["ASIN"]` for a per-product breakdown.
@@ -84,8 +87,20 @@ Retrieves values. Build the request carefully — the API is strict.
 ```
 
 ## Gotchas (these cause most failures)
-- **`MARKETPLACE_ID` filter is mandatory** in `groupableColumnFilter` on every `getMetricData`
-  call — required even though `marketplaceIds` is a top-level param.
+- **`MARKETPLACE_ID` filter is mandatory AND strict.** `groupableColumnFilter` must contain a
+  `MARKETPLACE_ID` leaf using `EQUALS` (single) or `IN` (multiple) with a real value — required
+  even though `marketplaceIds` is a top-level param. `IS_NULL`/`IS_NOT_NULL`/`LIKE` or an
+  `ASIN`-only filter are **rejected** ("missing marketplace ID filter").
+  - **Valid:** `{"operator":"EQUALS","column":"MARKETPLACE_ID","value":{"stringValue":"ATVPDKIKX0DER"}}`
+  - **Valid (with ASIN):** `{"operator":"AND","children":[{"operator":"EQUALS","column":"MARKETPLACE_ID","value":{"stringValue":"ATVPDKIKX0DER"}},{"operator":"EQUALS","column":"ASIN","value":{"stringValue":"B0C6X64277"}}]}`
+  - **Invalid:** `MARKETPLACE_ID` with `IS_NOT_NULL` (no value); an `ASIN`-only filter.
+- **`groupableColumnFilter` and `dateGranularity` are required** — not optional. Omit either and
+  the request fails / returns empty.
+- **Combining metrics is grain-based.** A single metric can be grouped by any column it's
+  groupable on. To combine **multiple** metrics in one call, they must **share a grain**: read
+  `domains[].availability[]` from `analytics_getMetricMetadata` and `groupBy` only a column in
+  the `commonGrains` shared by **all** requested metrics. Metrics at different grains must be
+  requested in **separate calls** — combining metrics that share no common grain fails.
 - **`metrics` must be objects** (`{"name": "..."}`), not strings.
 - **`entityId` is not auto-populated** by the gateway — always pass it explicitly.
 - **Pagination field names differ:** the request field is `paginationToken`; read its value
