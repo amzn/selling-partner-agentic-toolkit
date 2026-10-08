@@ -11,6 +11,7 @@ tools allowed by your Seller Central roles. Write actions are drafted for your a
 ## Skills
 
 - **seller-analytics** — seller performance metrics (inventory, traffic, sales); discovers metric IDs before querying.
+- **finance-month-end-closer** — close and reconcile a completed Amazon month: reconcile net proceeds against settlements, confirm payout statuses, help match bank deposits (seller-supplied; no bank integration), and produce an accountant-ready summary. Read-and-explain only; never files, submits, pays, or moves money.
 - **stockout-prevention** — quantify stockout risk from days-of-supply and velocity, recommend how much to reorder and by when, and check the inbound-shipment gap. Gives no pricing advice in either direction; if you name a specific price it will draft that exact change for your approval.
 - **fba-inbound-management** — full FBA inbound plan workflow (create -> packing -> placement -> transportation -> confirm) with approval gates.
 - **listing-troubleshooter** — the router for "something's wrong with my listing"; scans status/issues and routes to the right specialist.
