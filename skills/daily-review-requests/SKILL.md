@@ -52,13 +52,14 @@ All on the `sp-ai` MCP server. The chain is **discover → gate → send**:
 
 | Step | Tool | Access | Purpose |
 |------|------|--------|---------|
-| 1 | `searchOrders_searchOrders` | read | Find recently created/updated orders in the marketplace. `lastUpdatedAfter` (or `createdAfter`) is required; also pass `marketplaceIds`, optional `fulfillmentStatuses`. Paginated via `pagination.nextToken` (token expires in 24h). Rate ~0.0056/s (≈1 req/3min) — keep the lookback small. |
+| 1 | `searchOrders_searchOrders` | read | Find recently created/updated orders in the marketplace. `lastUpdatedAfter` (or `createdAfter`) is required; also pass `marketplaceIds`, optional `fulfillmentStatuses`. Paginated via `pagination.nextToken` (token expires in 24h). Rate ~0.0056/s, burst 20 (≈1 req/3min) — keep the lookback small. |
 | 2 | `solicitations_getSolicitationActionsForOrder` | read | **The authoritative eligibility gate.** Per order: returns available solicitation actions, or an **empty actions list** if the order is ineligible (already solicited, outside the time window, or not yet delivered). Rate 1/s, burst 5. |
 | 3 | `solicitations_createProductReviewAndSellerFeedbackSolicitation` | write (`requiresHumanReview`) | Sends Amazon's standard product-review + seller-feedback solicitation for one order. **One per order lifetime** — a 2nd attempt returns access-denied. Empty body on success. Rate 1/s, burst 5. |
 
 > Every call needs `entityId` (the merchant MCID) and a single marketplace (e.g. `ATVPDKIKX0DER`
-> US). Take these from session context; ask once if missing. **Never fabricate `entityId`,
-> `marketplaceIds`, or an `amazonOrderId`** — order IDs come only from Step 1.
+> US). `entityId` is required by the **MCP server layer** for authorization context — it is not a
+> native SP-API parameter. Take these from session context; ask once if missing. **Never fabricate
+> `entityId`, `marketplaceIds`, or an `amazonOrderId`** — order IDs come only from Step 1.
 > `amazonOrderId` is the plain 3-7-7 order identifier (e.g. `902-1845936-5435065`); pass it
 > straight through from the Step 1 results to Steps 2 and 3 — do not construct or alter it.
 
@@ -67,8 +68,9 @@ This skill uses the **Solicitations API** — the native "Request a Review" acti
 or Buyer-Seller Messaging. That matters: Amazon's Customer Reviews policy flags third-party
 bulk-emailing / review-solicitation services as violations, but the native solicitation is the
 sanctioned mechanism. Amazon sends a **fixed template the seller cannot customize**, so neutral
-content is structurally guaranteed. The three policy limits (once per order, 5–30 days
-post-delivery, buyer opt-out respected) are **enforced for you by Step 2** — an ineligible order
+content is structurally guaranteed. The three policy limits (once per order, the 5–30-day
+post-delivery window — documented as 5 days after `EarliestDeliveryDate` to 30 days after
+`LatestDeliveryDate` — and buyer opt-out) are **enforced for you by Step 2**: an ineligible order
 simply returns empty actions. Trust the gate; do not re-implement the window with client-side
 date math.
 

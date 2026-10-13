@@ -19,9 +19,10 @@ messages** — this skill is firmly on the native side.
 so the skill never has to compute them:
 1. **Once per order lifetime.** A second solicitation (or free-form proactive message) for the same
    order is refused; the send call returns access-denied.
-2. **5–30 days after delivery.** The request is only allowed inside this window. (This is a real
-   Amazon policy from Seller Central — it is *not* in the API model, so do **not** hardcode it. The
-   gate is the enforcement.)
+2. **5–30 days after delivery.** The request is only allowed inside this window — documented in
+   Amazon's Solicitations setup guide as **5 days after `EarliestDeliveryDate` through 30 days
+   after `LatestDeliveryDate`**. It is **enforced server-side by the gate**, not by the send
+   operation's own schema, so do **not** recompute it client-side — trust the gate.
 3. **Buyer opt-out respected.** Buyers who opted out of solicitations yield empty actions → no send.
 
 ## The lines the seller/skill must not cross (these are on you, not the API)
@@ -39,6 +40,15 @@ responsible **even if a third-party tool did it without their knowledge**.
   reviews — that's the violating channel, and a second request per order.
 - **No asking to change/remove a review**, no diverting negative feedback elsewhere, no fake or
   employee/family reviews.
+
+> **The one sanctioned exception — and it's not this skill.** Amazon does provide a legitimate path
+> for *seller feedback* (not product reviews): after you have **resolved** a buyer's problem, the
+> Messaging API's `createNegativeFeedbackRemoval` operation lets you ask the buyer to remove the
+> now-resolved negative **seller feedback**. That is a different operation, a different API, and a
+> different situation (a resolved issue — not "please change your rating"). This review-solicitation
+> skill never does it. If a seller asks to get a negative review/feedback changed, decline the
+> "change it to 5 stars" ask, but you may point them to that sanctioned Seller Central / Messaging
+> path for genuinely resolved issues.
 
 ## Why neutrality-by-default matters for a shared skill
 Because the API hands you a fixed neutral template, a "dumb" send-to-all-eligible loop is compliant
