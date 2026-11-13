@@ -21,6 +21,7 @@ tools allowed by your Seller Central roles. Write actions are drafted for your a
 - **listing-compliance** — a pre-flight compliance gate run before any compliance-sensitive listing write (claims, ingredients, category, condition, images, identifiers); advisory, never writes.
 - **invite-secondary-users** — guide the account admin to grant AI-agent access to secondary users via Seller Central Manage Agents (advisory; UI action).
 - **support-case-helper** — route the seller to Amazon Seller Support and prepare a clean, PII-free case summary; never submits without explicit confirmation.
+- **daily-review-requests** — a daily-cadence sweep that requests product reviews and seller feedback the policy-safe way via Amazon's native Solicitations API: find recent orders, gate each against Amazon's eligibility check, and after confirmation send the standard (uneditable) request to every eligible order. Send-to-all-eligible or none — no sentiment selectivity, no incentives, no custom email.
 - **sp-api-knowledge** — answer SP-API developer questions and guide integration design, grounded in the SP-API documentation.
 
 ## Commands
